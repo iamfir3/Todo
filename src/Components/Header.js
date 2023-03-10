@@ -61,7 +61,7 @@ const Header = ({
                 navigate(-1);
               }}
             ></BsArrowLeftCircle>
-            <p className="text-second200 text-[24px]">{listDetail?.listName}</p>
+            <p className="text-second200 text-[22px]">{listDetail?.listName}</p>
           </div>
         )}
       </div>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import listApis from "../Apis/listApis";
 import Pagination from "@mui/material/Pagination";
-import "../Css/Pagination.css"
+import "../Css/Pagination.css";
 
 const Home = () => {
   const [lists, setLists] = useState([]);
@@ -18,7 +18,7 @@ const Home = () => {
     const fetchLists = async () => {
       setIsLoading(true);
       const res = await listApis.getAll({
-        page: pagination.page-1,
+        page: pagination.page - 1,
         limit: pagination.limit,
       });
       setLists(res.data);
@@ -40,29 +40,34 @@ const Home = () => {
           <img src={emptyList} alt="emptyList"></img>
         </div>
       )}
-      <div className="w-full mt-[50px] flex flex-col gap-[30px]">
-        {lists?.length !== 0 &&
-          lists?.lists?.map((list) => (
-            <ListItem
-              key={list.listId}
-              name={list.listName}
-              id={list.listId}
-            ></ListItem>
-          ))}
-      </div>
-      <div className="flex justify-end mt-[20px] text-second200">
-        <Pagination
-          count={Math.ceil(lists?.listCount / 7)}
-          color="primary"
-          size="large"
-          page={pagination.page}
-          onChange={(event, value) => {
-            setPagination({ page: value, limit: 7 });
-          }}
-          defaultPage={1} siblingCount={1} boundaryCount={1}
-        />
-      </div>
-      {/* <Pagination page={pagination.page} limit={pagination.limit} total={Math.ceil(lists?.listCount/7)} setPagination={setPagination}></Pagination> */}
+      {!isLoading && (
+        <>
+          <div className="w-full mt-[50px] flex flex-col gap-[30px]">
+            {lists?.length !== 0 &&
+              lists?.lists?.map((list) => (
+                <ListItem
+                  key={list.listId}
+                  name={list.listName}
+                  id={list.listId}
+                ></ListItem>
+              ))}
+          </div>
+          <div className="flex justify-end mt-[20px] text-second200">
+            <Pagination
+              count={Math.ceil(lists?.listCount / 7)}
+              color="primary"
+              size="large"
+              page={pagination.page}
+              onChange={(event, value) => {
+                setPagination({ page: value, limit: 7 });
+              }}
+              defaultPage={1}
+              siblingCount={1}
+              boundaryCount={1}
+            />
+          </div>{" "}
+        </>
+      )}
     </div>
   );
 };

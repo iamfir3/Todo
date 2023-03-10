@@ -51,8 +51,9 @@ const ButtonWithInput = ({
           }}
           onChange={(e)=>{setInputValue(e.target.value)}}
           ref={inputRef}
+          maxLength='35'
         ></input>
-
+        <p className={`text-[14px] mr-[10px] ${inputValue===''?'hidden':''}`}>{inputValue.length}/35</p>
         {!isLoading && (
           <BsFillCheckCircleFill
             size="28px"

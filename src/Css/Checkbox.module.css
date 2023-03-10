@@ -23,11 +23,12 @@ input:checked ~ .check{
 }
 
 .trash{
-    display: none;
+    transform: translateX(100px);
+    transition: all .3s ease-in-out;
 }
 
 .wholeContainer:hover .trash{
-    display: flex;
+    transform: translateX(0px);
 }
 
 

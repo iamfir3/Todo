@@ -23,6 +23,28 @@ module.exports = {
         dark700: "#462730",
         dark600: "#632239",
       },
+      keyframes: {
+        "top-popup": {
+          "0%": {
+            transform: "translate(0 , -200px)",
+          },
+          "20%": {
+            transform: "translate(0 , 140px)",
+          },
+          "50%": {
+            transform: "translate(0 , 90px)",
+          },
+          "80%": {
+            transform: "translate(0 , 110px)",
+          },
+          "100%": {
+            transform: "translate(0 , -200px)",
+          },
+        },
+      },
+      animation:{
+        'top-popup':'top-popup 2s ease-in-out '
+      }
     },
   },
   plugins: [],
