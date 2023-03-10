@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 25px;
+    width: 25px;
+    background: linear-gradient( to top, #632329 0%,#F25551 50%,#50F283 100%);
+    border-radius: 4px;
+}
+
+.check{
+    display: none;
+}
+
+input:checked ~ .check{
+    display: block;
+}
+
+.trash{
+    display: none;
+}
+
+.wholeContainer:hover .trash{
+    display: flex;
+}
+
+
