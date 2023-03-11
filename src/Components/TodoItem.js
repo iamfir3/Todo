@@ -1,6 +1,10 @@
 import Cssclass from "../Css/Checkbox.module.css";
 import { AiOutlineCheck } from "react-icons/ai";
-import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
+import {
+  BsFillTrashFill,
+  BsFillPencilFill,
+  BsFillCheckCircleFill,
+} from "react-icons/bs";
 import todoApis from "../Apis/todoApis";
 import { useEffect, useState } from "react";
 const TodoItem = ({
@@ -11,17 +15,28 @@ const TodoItem = ({
   setIsDeletingTodo,
   createDate,
   modifyDate,
+  setChangeIsDone,
 }) => {
   const [done, setDone] = useState(isDone);
+  const [isEditTodo, setIsEditTodo] = useState();
+  const [inputValue, setInputValue] = useState("");
+  const [todoItemInfo, setTodoItemInfo] = useState({
+    name: name,
+    id: id,
+    isDone: isDone,
+    createDate: createDate,
+    modifyDate: modifyDate,
+  });
+
   let dayBegin = {
-    year: new Date(createDate).getFullYear(),
-    month: new Date(createDate).getMonth(),
-    day: new Date(createDate).getDate(),
+    year: new Date(todoItemInfo.createDate).getFullYear(),
+    month: new Date(todoItemInfo.createDate).getMonth(),
+    day: new Date(todoItemInfo.createDate).getDate(),
   };
   let dayFinish = {
-    year: new Date(modifyDate).getFullYear(),
-    month: new Date(modifyDate).getMonth(),
-    day: new Date(modifyDate).getDate(),
+    year: new Date(todoItemInfo.modifyDate).getFullYear(),
+    month: new Date(todoItemInfo.modifyDate).getMonth(),
+    day: new Date(todoItemInfo.modifyDate).getDate(),
   };
 
   return (
@@ -33,20 +48,24 @@ const TodoItem = ({
           <input
             type="checkbox"
             className="hidden"
-            checked={done ? true : false}
+            checked={todoItemInfo.isDone ? true : false}
             onChange={() => {
               const updateTodo = async () => {
                 const res = await todoApis.updateTodo({
-                  content: name,
-                  todoId: id,
-                  done: done ? 0 : 1,
+                  content: todoItemInfo.name,
+                  todoId: todoItemInfo.id,
+                  done: todoItemInfo.isDone ? 0 : 1,
                 });
+                setTodoItemInfo({
+                  name: res.data.content,
+                  isDone: res.data.done,
+                  id: res.data.todoId,
+                  createDate: res.data.createDate,
+                  modifyDate: res.data.modifyDate,
+                });
+                // setChangeIsDone((prev) => !prev);
               };
               updateTodo();
-
-              setTimeout(() => {
-                setDone((prev) => !prev);
-              }, 100);
             }}
           ></input>
           <div
@@ -59,36 +78,66 @@ const TodoItem = ({
             ></AiOutlineCheck>
           </div>
         </label>
-        <p className="text-second200 text-[16px]">{name}</p>
+        <p className="text-second200 text-[16px]">{todoItemInfo.name}</p>
       </div>
-      <div className="flex gap-[10px]">
+      <div className={`flex gap-[10px] ${Cssclass.day}`}>
         <p className="text-second200 text-[14px]">
           Begin: {`${dayBegin.day}/${dayBegin.month}/${dayBegin.year}`}
         </p>
-        {isDone && (
-          <p className="text-second200 text-[14px]">
-            Finish: {`${dayFinish.day}/${dayFinish.month}/${dayFinish.year}`}
-          </p>
-        )}
+
+        <p className="text-second200 text-[14px]">
+          {todoItemInfo.isDone
+            ? `Finish: ${dayFinish.day}/${dayFinish.month}/${dayFinish.year}`
+            : ""}
+        </p>
       </div>
       <div
         className={`flex items-center gap-[20px] justify-center ${Cssclass.trash}`}
       >
-        <BsFillPencilFill
-          className="justify-self-end text-second200 cursor-pointer"
-          size="24"
-        ></BsFillPencilFill>
+        {isEditTodo && (
+          <input
+            onBlur={() => {
+              setInputValue("");
+              setIsEditTodo(false);
+            }}
+            className="ml-[50px] outline-none border-[2px] border-dark800 px-[10px] py-[8px] rounded-[10px]"
+            maxLength="35"
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+          ></input>
+        )}
+        <p
+          className={`text-[14px] text-second200 ${
+            inputValue === "" ? "hidden" : ""
+          }`}
+        >
+          {inputValue.length}/35
+        </p>
+        {!isEditTodo && (
+          <BsFillPencilFill
+            className="justify-self-end text-second200 cursor-pointer"
+            size="24"
+            onClick={() => {
+              setIsEditTodo(true);
+            }}
+          ></BsFillPencilFill>
+        )}
+        {isEditTodo && (
+          <BsFillCheckCircleFill
+            className="justify-self-end text-second200 cursor-pointer"
+            size="24"
+          ></BsFillCheckCircleFill>
+        )}
         <BsFillTrashFill
           className="justify-self-end text-second200 cursor-pointer"
           size="24"
           onClick={() => {
             const deleteTodo = async () => {
               const res = todoApis.deleteTodo({ todoId: id });
+              setIsDeletingTodo((prev) => !prev);
             };
             deleteTodo();
-            setTimeout(() => {
-              setIsDeletingTodo((prev) => !prev);
-            }, 500);
           }}
         ></BsFillTrashFill>
       </div>

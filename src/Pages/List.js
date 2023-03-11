@@ -12,6 +12,7 @@ const List = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pageination, setPagination] = useState({ page: 1, limit: 7 });
   const [isNotFound, setIsNotFound] = useState(false);
+  const [changeIsDone, setChangeIsDone] = useState(false);
   const navigate=useNavigate();
   const [setRerenderLists, setRerenderTodos, rerenderLists, rerenderTodos] =
     useOutletContext();
@@ -31,13 +32,13 @@ const List = () => {
         setIsLoading(false);
       } catch (e) {
         setIsNotFound(true);
-        setTimeout(()=>{navigate('/')},1000)
+        setTimeout(()=>{navigate('/')},2000)
         setIsLoading(false);
       }
     };
 
     fetchTodo();
-  }, [rerenderTodos, isDeletingTodo, pageination.page]);
+  }, [rerenderTodos, isDeletingTodo, pageination.page,changeIsDone]);
 
   return (
     <div className="relative">
@@ -69,6 +70,7 @@ const List = () => {
                   setIsDeletingTodo={setIsDeletingTodo}
                   createDate={task?.createDate}
                   modifyDate={task?.modifyDate}
+                  setChangeIsDone={setChangeIsDone}
                 ></TodoItem>
               ))}
             </div>

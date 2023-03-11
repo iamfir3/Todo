@@ -12,8 +12,7 @@ const Home = () => {
     useOutletContext();
   const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState({ page: 1, limit: 7 });
-  console.log(lists?.listCount);
-
+ 
   useEffect(() => {
     const fetchLists = async () => {
       setIsLoading(true);

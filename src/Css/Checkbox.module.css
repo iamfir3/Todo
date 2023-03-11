@@ -27,8 +27,17 @@ input:checked ~ .check{
     transition: all .3s ease-in-out;
 }
 
+.day{
+    transform: translateX(440px);
+    transition: all .3s ease-in-out;
+}
+
 .wholeContainer:hover .trash{
     transform: translateX(0px);
 }
+.wholeContainer:hover .day{
+    transform: translateX(200px);
+}
+
 
 

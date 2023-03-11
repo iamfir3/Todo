@@ -26,7 +26,7 @@ const Header = ({
   const [listDetail, setListDetail] = useState();
   const [isAddingList, setIsAddingList] = useState(false);
   const [isAddingTodo, setIsAddingTodo] = useState(false);
-  const [isLoading,setIsLoading]=useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isRenameList, setIsRenameList] = useState(false);
   const [rerender, setRerender] = useState(false);
 
@@ -72,24 +72,21 @@ const Header = ({
               isAdding={isAddingList}
               inputRef={inputListRef}
               isLoading={isLoading}
-              icon={<BsPlusCircle size='24'></BsPlusCircle>}
+              icon={<BsPlusCircle size="24"></BsPlusCircle>}
               content="Add new list"
               setIsAdding={setIsAddingList}
               func={() => {
-                setIsLoading(true);
                 const addList = async () => {
+                  setIsLoading(true);
                   const res = await listApis.createList({
                     listName: inputListRef.current.value,
                   });
                   inputListRef.current.value = "";
-                  
+                  setRerenderLists((prev) => !prev);
+                  setIsLoading(false);
                 };
 
                 addList();
-                setIsLoading(false);
-                setTimeout(() => {
-                  setRerenderLists((prev) => !prev);
-                }, 500);
               }}
             ></ButtonWithInput>
           </>
@@ -114,7 +111,7 @@ const Header = ({
             <ButtonWithInput
               isAdding={isAddingTodo}
               inputRef={inputTodoRef}
-              icon={<BsPlusSquare size='24'></BsPlusSquare>}
+              icon={<BsPlusSquare size="24"></BsPlusSquare>}
               content="Add new todo"
               setIsAdding={setIsAddingTodo}
               func={() => {
@@ -125,19 +122,17 @@ const Header = ({
                     done: 0,
                   });
                   inputTodoRef.current.value = "";
+                  setRerenderTodos((prev) => !prev);
                 };
 
                 addTodo();
-                setTimeout(() => {
-                  setRerenderTodos((prev) => !prev);
-                }, 500);
               }}
             ></ButtonWithInput>
 
             <ButtonWithInput
               isAdding={isRenameList}
               inputRef={inputRenameListRef}
-              icon={<BiRename size='24'></BiRename>}
+              icon={<BiRename size="24"></BiRename>}
               content="Rename list"
               setIsAdding={setIsRenameList}
               func={() => {
@@ -146,13 +141,11 @@ const Header = ({
                     listName: inputRenameListRef.current.value,
                     listId: listDetail.listId,
                   });
+                  setRerender((prev) => !prev);
                   inputRenameListRef.current.value = "";
                 };
 
                 renameList();
-                setTimeout(() => {
-                  setRerender((prev) => !prev);
-                }, 500);
               }}
             ></ButtonWithInput>
           </div>
