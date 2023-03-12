@@ -7,14 +7,19 @@ import { useOutletContext,useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import "../Css/Pagination.css";
 import notFoundImage from "../Assets/404.jpg";
+import { useSelector,useDispatch } from "react-redux";
+import { setPageTodo } from "../Store/Actions/pageActions";
+
 const List = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [pageination, setPagination] = useState({ page: 1, limit: 7 });
+  const {pageList,pageTodo} =useSelector(state=>state.page);
+  const dispatch=useDispatch();
+  const [pageination, setPagination] = useState({ page: pageTodo, limit: 7 });
   const [isNotFound, setIsNotFound] = useState(false);
   const [changeIsDone, setChangeIsDone] = useState(false);
   const navigate=useNavigate();
-  const [setRerenderLists, setRerenderTodos, rerenderLists, rerenderTodos] =
+  const [setRerenderLists, setRerenderTodos, rerenderLists, rerenderTodos,setTriggerMessage,setMessageInfo,setLoadingMessage] =
     useOutletContext();
   const [isDeletingTodo, setIsDeletingTodo] = useState(false);
   const listId = useParams().id;
@@ -71,6 +76,9 @@ const List = () => {
                   createDate={task?.createDate}
                   modifyDate={task?.modifyDate}
                   setChangeIsDone={setChangeIsDone}
+                  setLoadingMessage={setLoadingMessage}
+                  setTriggerMessage={setTriggerMessage}
+                  setMessageInfo={setMessageInfo}
                 ></TodoItem>
               ))}
             </div>
@@ -84,6 +92,7 @@ const List = () => {
                 page={pageination.page}
                 onChange={(event, value) => {
                   setPagination({ page: value, limit: 7 });
+                  dispatch(setPageTodo(value))
                 }}
                 defaultPage={1}
                 siblingCount={1}

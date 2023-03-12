@@ -12,6 +12,7 @@ const ButtonWithInput = ({
   content,
 }) => {
   const [inputValue,setInputValue]=useState('');
+  console.log(inputValue);
   return (
     <div
       className={`flex relative text-primary gap-[18px] items-center ${
@@ -59,6 +60,7 @@ const ButtonWithInput = ({
             size="28px"
             onMouseDown={(e) => {
               func();
+              setInputValue('');
             }}
             className={`${inputValue===''?'translate-x-[100px]':'translate-x-[0px]'} translate-all ease-in-out`}
           

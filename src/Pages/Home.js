@@ -5,14 +5,17 @@ import { useOutletContext } from "react-router-dom";
 import listApis from "../Apis/listApis";
 import Pagination from "@mui/material/Pagination";
 import "../Css/Pagination.css";
+import { useSelector, useDispatch } from "react-redux";
+import { setPageList } from "../Store/Actions/pageActions";
 
 const Home = () => {
   const [lists, setLists] = useState([]);
+  const dispatch = useDispatch();
   const [setRerenderLists, setRerenderTodos, rerenderLists, rerenderTodos] =
     useOutletContext();
   const [isLoading, setIsLoading] = useState(true);
-  const [pagination, setPagination] = useState({ page: 1, limit: 7 });
- 
+  const { pageTodo, pageList } = useSelector((state) => state.page);
+  const [pagination, setPagination] = useState({ page: pageList, limit: 7 });
   useEffect(() => {
     const fetchLists = async () => {
       setIsLoading(true);
@@ -59,6 +62,7 @@ const Home = () => {
               page={pagination.page}
               onChange={(event, value) => {
                 setPagination({ page: value, limit: 7 });
+                dispatch(setPageList(value));
               }}
               defaultPage={1}
               siblingCount={1}

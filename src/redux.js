@@ -1,4 +1,5 @@
 import rootReducer from "./Store/Reducer/rootReducer";
+import { persistStore } from "redux-persist";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -7,7 +8,8 @@ const reduxStore = () => {
     rootReducer,
     composeWithDevTools(applyMiddleware(thunk))
   );
-  return { store};
+  const persistor = persistStore(store);
+  return { store, persistor };
 };
 
 export default reduxStore;

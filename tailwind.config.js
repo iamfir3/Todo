@@ -43,7 +43,7 @@ module.exports = {
         },
       },
       animation:{
-        'top-popup':'top-popup 2s ease-in-out '
+        'top-popup':'top-popup 2s ease-in-out'
       }
     },
   },

@@ -12,12 +12,15 @@ import { useDispatch } from "react-redux";
 import listApis from "../Apis/listApis";
 import todoApis from "../Apis/todoApis";
 import ButtonWithInput from "./ButtonWithInput";
+import { setPageTodo } from "../Store/Actions/pageActions";
 
 const Header = ({
   setRerenderLists,
   setRerenderTodos,
-  rerenderLists,
-  rerenderTodos,
+  triggerMessage,
+  setMessageInfo,
+  setTriggerMessage,
+  setLoadingMessage
 }) => {
   const param = useParams()["*"].split("/")[0];
   const params = useParams()["*"]?.split("/")[1];
@@ -59,6 +62,7 @@ const Header = ({
               className="text-dark600 cursor-pointer"
               onClick={() => {
                 navigate(-1);
+                dispatch(setPageTodo(1));
               }}
             ></BsArrowLeftCircle>
             <p className="text-second200 text-[22px]">{listDetail?.listName}</p>
@@ -77,13 +81,31 @@ const Header = ({
               setIsAdding={setIsAddingList}
               func={() => {
                 const addList = async () => {
-                  setIsLoading(true);
-                  const res = await listApis.createList({
-                    listName: inputListRef.current.value,
-                  });
-                  inputListRef.current.value = "";
-                  setRerenderLists((prev) => !prev);
-                  setIsLoading(false);
+                  try {
+                    setIsLoading(true);
+                    setLoadingMessage(true);
+                    const res = await listApis.createList({
+                      listName: inputListRef.current.value,
+                    });
+
+                    inputListRef.current.value = "";
+                    setLoadingMessage(false);
+                    if (res.status === 200) {
+                      setRerenderLists((prev) => !prev);
+                      setTriggerMessage(true);
+                      setMessageInfo({
+                        message: "Add successfully",
+                        status: "success",
+                      });
+                    }
+                    setIsLoading(false);
+                  } catch (e) {
+                    setTriggerMessage(true);
+                    setMessageInfo({
+                      message: "Something went wrong. Try again later!",
+                      status: "error",
+                    });
+                  }
                 };
 
                 addList();
@@ -98,10 +120,27 @@ const Header = ({
               text="Delete list"
               func={() => {
                 const deleteList = async () => {
-                  const res = await listApis.deleteList({
-                    listId: listDetail.listId,
-                  });
-                  navigate("");
+                  try {
+                    setLoadingMessage(true);
+                    const res = await listApis.deleteList({
+                      listId: listDetail.listId,
+                    });
+                    setLoadingMessage(false);
+                    if (res.status === 200) {
+                      setTriggerMessage(true);
+                      setMessageInfo({
+                        message: "Delete successfully",
+                        status: "success",
+                      });
+                    }
+                    navigate("");
+                  } catch (e) {
+                    setTriggerMessage(true);
+                    setMessageInfo({
+                      message: "Something went wrong. Try again later!",
+                      status: "error",
+                    });
+                  }
                 };
 
                 deleteList();
@@ -116,13 +155,31 @@ const Header = ({
               setIsAdding={setIsAddingTodo}
               func={() => {
                 const addTodo = async () => {
-                  const res = await todoApis.createTodo({
-                    content: inputTodoRef.current.value,
-                    listId: listDetail.listId,
-                    done: 0,
-                  });
-                  inputTodoRef.current.value = "";
-                  setRerenderTodos((prev) => !prev);
+                  try {
+                    setLoadingMessage(true);
+                    const res = await todoApis.createTodo({
+                      content: inputTodoRef.current.value,
+                      listId: listDetail.listId,
+                      done: 0,
+                    });
+                    inputTodoRef.current.value = "";
+                    setLoadingMessage(false);
+
+                    if (res.status === 200) {
+                      setTriggerMessage(true);
+                      setMessageInfo({
+                        message: "Add successfully",
+                        status: "success",
+                      });
+                      setRerenderTodos((prev) => !prev);
+                    }
+                  } catch (e) {
+                    setTriggerMessage(true);
+                    setMessageInfo({
+                      message: "Something went wrong. Try again later!",
+                      status: "error",
+                    });
+                  }
                 };
 
                 addTodo();
@@ -137,12 +194,32 @@ const Header = ({
               setIsAdding={setIsRenameList}
               func={() => {
                 const renameList = async () => {
-                  const res = await listApis.updateList({
-                    listName: inputRenameListRef.current.value,
-                    listId: listDetail.listId,
-                  });
-                  setRerender((prev) => !prev);
-                  inputRenameListRef.current.value = "";
+                  try {
+                    setLoadingMessage(true);
+
+                    const res = await listApis.updateList({
+                      listName: inputRenameListRef.current.value,
+                      listId: listDetail.listId,
+                    });
+                    setLoadingMessage(false);
+                    
+                    if (res.status === 200) {
+                      setTriggerMessage(true);
+                      setMessageInfo({
+                        message: "Rename successfully",
+                        status: "success",
+                      });
+
+                      setRerender((prev) => !prev);
+                    }
+                    inputRenameListRef.current.value = "";
+                  } catch (e) {
+                    setTriggerMessage(true);
+                    setMessageInfo({
+                      message: "Something went wrong. Try again later!",
+                      status: "error",
+                    });
+                  }
                 };
 
                 renameList();
