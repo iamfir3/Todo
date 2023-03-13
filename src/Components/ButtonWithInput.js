@@ -13,7 +13,7 @@ const ButtonWithInput = ({
   maxLength
 }) => {
   const [inputValue,setInputValue]=useState('');
-  console.log(inputValue);
+ 
   return (
     <div
       className={`flex relative text-primary gap-[18px] items-center ${

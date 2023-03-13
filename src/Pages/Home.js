@@ -16,6 +16,12 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { pageTodo, pageList } = useSelector((state) => state.page);
   const [pagination, setPagination] = useState({ page: pageList, limit: 7 });
+  useEffect(()=>{
+    if ( lists.length=== 0 && pagination.page > 1) {
+      setPagination({ page: 1, limit: 7 });
+      dispatch(setPageList(1));
+    }
+  },[]);
   useEffect(() => {
     const fetchLists = async () => {
       setIsLoading(true);
