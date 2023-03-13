@@ -180,6 +180,7 @@ const TodoItem = ({
                   }
                 };
                 updateTodo();
+                inputRef.current.value='';
               }}
             ></BsFillCheckCircleFill>
           )}
