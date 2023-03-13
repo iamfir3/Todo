@@ -156,18 +156,28 @@ const TodoItem = ({
                     });
                     setLoadingMessage(false);
                     if(res.status===200){
-                      setTriggerMessage(true);
-                      setMessageInfo({
-                        message:'Todo Updated successfully',
-                        status:'success'
-                      })
-                      setTodoItemInfo({
-                        name: res.data.content,
-                        isDone: res.data.done,
-                        id: res.data.todoId,
-                        createDate: res.data.createDate,
-                        modifyDate: res.data.modifyDate,
-                      });
+                      if(res.data.statusCode==='200'){
+
+                        setTriggerMessage(true);
+                        setMessageInfo({
+                          message:'Todo Updated successfully',
+                          status:'success'
+                        })
+                        setTodoItemInfo({
+                          name: res.data.content,
+                          isDone: res.data.done,
+                          id: res.data.todoId,
+                          createDate: res.data.createDate,
+                          modifyDate: res.data.modifyDate,
+                        });
+                      }
+                      else if(res.data.statusCode==="1"){
+                        setTriggerMessage(true);
+                        setMessageInfo({
+                          message:res.data.message,
+                          status:'error'
+                        })
+                      }
                       setInputValue("");
                     }
                   }

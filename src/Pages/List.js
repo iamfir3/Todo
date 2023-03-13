@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useOutletContext,useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import "../Css/Pagination.css";
-import notFoundImage from "../Assets/404.jpg";
+import notFoundImage from "../Assets/404.png";
 import { useSelector,useDispatch } from "react-redux";
 import { setPageTodo } from "../Store/Actions/pageActions";
 
