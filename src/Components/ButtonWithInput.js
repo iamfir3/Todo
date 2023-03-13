@@ -10,6 +10,7 @@ const ButtonWithInput = ({
   isLoading,
   func,
   content,
+  maxLength
 }) => {
   const [inputValue,setInputValue]=useState('');
   console.log(inputValue);
@@ -52,9 +53,9 @@ const ButtonWithInput = ({
           }}
           onChange={(e)=>{setInputValue(e.target.value)}}
           ref={inputRef}
-          maxLength='35'
+          maxLength={maxLength}
         ></input>
-        <p className={`text-[14px] mr-[10px] ${inputValue===''?'hidden':''}`}>{inputValue.length}/35</p>
+        <p className={`text-[14px] mr-[10px] ${inputValue===''?'hidden':''}`}>{inputValue.length}/{maxLength}</p>
         {!isLoading && (
           <BsFillCheckCircleFill
             size="28px"

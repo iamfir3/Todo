@@ -22,7 +22,7 @@ const Public = () => {
         setTriggerMessage={setTriggerMessage}
       ></StatusMessage>
       <LoadingMessage triggerMessage={loadingMessage}></LoadingMessage>
-      <div className="max-w-[1440px] w-full px-[113px] pt-[75px]">
+      <div className="max-w-[1440px] w-full px-[113px] pt-[75px] pb-[30px]">
         <Header
           setRerenderLists={setRerenderLists}
           setRerenderTodos={setRerenderTodos}

@@ -20,7 +20,7 @@ const Header = ({
   triggerMessage,
   setMessageInfo,
   setTriggerMessage,
-  setLoadingMessage
+  setLoadingMessage,
 }) => {
   const param = useParams()["*"].split("/")[0];
   const params = useParams()["*"]?.split("/")[1];
@@ -65,7 +65,11 @@ const Header = ({
                 dispatch(setPageTodo(1));
               }}
             ></BsArrowLeftCircle>
-            <p className="text-second200 text-[22px]">{listDetail?.listName}</p>
+            <div className="w-[400px] whitespace-nowrap overflow-hidden">
+              <p className="text-second200 text-[22px] ">
+                {listDetail?.listName}
+              </p>
+            </div>
           </div>
         )}
       </div>
@@ -78,6 +82,7 @@ const Header = ({
               isLoading={isLoading}
               icon={<BsPlusCircle size="24"></BsPlusCircle>}
               content="Add new list"
+              maxLength={"35"}
               setIsAdding={setIsAddingList}
               func={() => {
                 const addList = async () => {
@@ -152,6 +157,7 @@ const Header = ({
               inputRef={inputTodoRef}
               icon={<BsPlusSquare size="24"></BsPlusSquare>}
               content="Add new todo"
+              maxLength={"200"}
               setIsAdding={setIsAddingTodo}
               func={() => {
                 const addTodo = async () => {
@@ -202,7 +208,7 @@ const Header = ({
                       listId: listDetail.listId,
                     });
                     setLoadingMessage(false);
-                    
+
                     if (res.status === 200) {
                       setTriggerMessage(true);
                       setMessageInfo({

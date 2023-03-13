@@ -88,7 +88,7 @@ const TodoItem = ({
             ></AiOutlineCheck>
           </div>
         </label>
-        <p className="text-second200 text-[16px] ">{todoItemInfo.name}</p>
+        <p className="text-second200 text-[16px] w-[80%]">{todoItemInfo.name}</p>
       </div>
       <div
         className={`flex items-center justify-center w-[50%] justify-around px-[20px] ${Cssclass.rightContainer}`}
@@ -117,7 +117,7 @@ const TodoItem = ({
             className={`ml-[50px] outline-none border-[2px] border-dark800 px-[10px] py-[8px] rounded-[10px] ${
               isEditTodo ? "" : "translate-x-[100px] opacity-0 absolute z-[2]"
             } transition-all`}
-            maxLength="35"
+            maxLength="200"
             onChange={(e) => {
               setInputValue(e.target.value);
             }}
@@ -129,7 +129,7 @@ const TodoItem = ({
               inputValue === "" ? "hidden" : ""
             }`}
           >
-            {inputValue.length}/35
+            {inputValue.length}/200
           </p>
           {!isEditTodo && (
             <BsFillPencilFill
